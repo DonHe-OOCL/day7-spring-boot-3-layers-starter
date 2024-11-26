@@ -1,6 +1,6 @@
 package com.oocl.springbootemployee.service;
 
-import com.oocl.springbootemployee.exception.EmployeeAgeInvalidException;
+import com.oocl.springbootemployee.exception.EmployeeCreateInvalidException;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.repository.IEmployeeRepository;
 import org.springframework.stereotype.Service;
@@ -19,10 +19,16 @@ public class EmployeeService {
     }
 
     public Employee creat(Employee employee) {
-        if (employee.getAge() < 18 || employee.getAge() > 65) {
-            throw new EmployeeAgeInvalidException();
+        if (checkCreateEmployeeInvalid(employee)) {
+            throw new EmployeeCreateInvalidException();
         }
         return employeeRepository.addEmployee(employee);
+    }
+
+    private boolean checkCreateEmployeeInvalid(Employee employee) {
+        return employee.getAge() < 18
+                || employee.getAge() > 65
+                || (employee.getAge() > 30 && employee.getSalary() < 20000.0);
     }
 
     public Employee update(Integer employeeId, Employee employee){

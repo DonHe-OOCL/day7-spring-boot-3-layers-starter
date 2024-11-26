@@ -1,9 +1,8 @@
 package com.oocl.springbootemployee.service;
 
-import com.oocl.springbootemployee.exception.EmployeeAgeInvalidException;
+import com.oocl.springbootemployee.exception.EmployeeCreateInvalidException;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
-import com.oocl.springbootemployee.repository.EmployeeRepository;
 import com.oocl.springbootemployee.repository.IEmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,7 +58,19 @@ class EmployeeServiceTest {
         Employee kiKi = new Employee(1, "KiKi", 6, Gender.FEMALE, 8000.0);
         // When
         // Then
-        assertThrows(EmployeeAgeInvalidException.class, () -> employeeService.creat(kiKi));
+        assertThrows(EmployeeCreateInvalidException.class, () -> employeeService.creat(kiKi));
         verify(mockedEmployeeRepository, never()).addEmployee(any());
     }
+    
+    @Test
+    public void should_throw_exception_when_create_given_a_employee_with_age_31_salary_1() {
+        // Given
+        Employee kiKi = new Employee(1, "KiKi", 31, Gender.FEMALE, 1.0);
+        // When
+        // Then
+        assertThrows(EmployeeCreateInvalidException.class, () -> employeeService.creat(kiKi));
+        verify(mockedEmployeeRepository, never()).addEmployee(any());
+    }
+
+
 }
