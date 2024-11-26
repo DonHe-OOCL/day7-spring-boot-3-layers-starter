@@ -2,6 +2,7 @@ package com.oocl.springbootemployee.service;
 
 import com.oocl.springbootemployee.exception.EmployeeCreateInvalidException;
 import com.oocl.springbootemployee.exception.EmployeeInactivityException;
+import com.oocl.springbootemployee.exception.EmployeeNotFundException;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.repository.IEmployeeRepository;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,12 @@ public class EmployeeService {
 
     public Employee update(Integer employeeId, Employee employee){
         Employee employeeExisted = employeeRepository.getEmployeeById(employeeId);
+        if (employeeExisted == null) {
+            throw new EmployeeNotFundException();
+        }
+        if (!employeeExisted.getActivity()) {
+            throw new EmployeeInactivityException();
+        }
 
         var nameToUpdate = employee.getName() == null ? employeeExisted.getName() : employee.getName();
         var ageToUpdate = employee.getAge() == null ? employeeExisted.getAge() : employee.getAge();

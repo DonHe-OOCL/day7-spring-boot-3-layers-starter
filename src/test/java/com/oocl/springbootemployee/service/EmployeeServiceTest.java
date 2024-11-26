@@ -89,7 +89,9 @@ class EmployeeServiceTest {
         Employee kiKi = new Employee(1, "KiKi", 30, Gender.FEMALE, 1000000.0);
         kiKi.setActivity(false);
         // When
+        when(mockedEmployeeRepository.getEmployeeById(1)).thenReturn(kiKi);
         // Then
-        assertThrows(EmployeeInactivityException.class, () -> employeeService.update(kiKi.getId(), kiKi));
+        assertThrows(EmployeeInactivityException.class, () -> employeeService.update(1, kiKi));
+        verify(mockedEmployeeRepository, never()).updateEmployee(any(), any());
     }
 }
