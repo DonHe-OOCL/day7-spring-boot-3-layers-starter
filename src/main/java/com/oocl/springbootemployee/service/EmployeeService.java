@@ -1,6 +1,7 @@
 package com.oocl.springbootemployee.service;
 
 import com.oocl.springbootemployee.exception.EmployeeCreateInvalidException;
+import com.oocl.springbootemployee.exception.EmployeeInactivityException;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.repository.IEmployeeRepository;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ public class EmployeeService {
     public Employee creat(Employee employee) {
         if (checkCreateEmployeeInvalid(employee)) {
             throw new EmployeeCreateInvalidException();
+        }
+        if (!employee.getActivity()) {
+            throw new EmployeeInactivityException();
         }
         return employeeRepository.addEmployee(employee);
     }

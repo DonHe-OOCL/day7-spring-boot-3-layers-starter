@@ -72,5 +72,13 @@ class EmployeeServiceTest {
         verify(mockedEmployeeRepository, never()).addEmployee(any());
     }
 
-
+    @Test
+    public void should_created_when_create_given_a_employee_with_activity() {
+        // Given
+        Employee kiKi = new Employee(1, "KiKi", 30, Gender.FEMALE, 100000.0);
+        // When
+        // Then
+        employeeService.creat(kiKi);
+        verify(mockedEmployeeRepository).addEmployee(argThat(Employee::getActivity));
+    }
 }
