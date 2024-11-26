@@ -1,6 +1,7 @@
 package com.oocl.springbootemployee.service;
 
 import com.oocl.springbootemployee.exception.EmployeeCreateInvalidException;
+import com.oocl.springbootemployee.exception.EmployeeInactivityException;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
 import com.oocl.springbootemployee.repository.IEmployeeRepository;
@@ -80,5 +81,15 @@ class EmployeeServiceTest {
         // Then
         employeeService.creat(kiKi);
         verify(mockedEmployeeRepository).addEmployee(argThat(Employee::getActivity));
+    }
+
+    @Test
+    public void should_throw_exception_when_update_given_a_employee_no_activity() {
+        // Given
+        Employee kiKi = new Employee(1, "KiKi", 30, Gender.FEMALE, 1000000.0);
+        kiKi.setActivity(false);
+        // When
+        // Then
+        assertThrows(EmployeeInactivityException.class, () -> employeeService.update(kiKi.getId(), kiKi));
     }
 }
